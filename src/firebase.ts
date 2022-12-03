@@ -45,7 +45,7 @@ export const signInWithGoogle = async () => {
 			});
 		}
 	} catch (err) {
-		console.error(err);
+		alert("Login with Google failed, please try again.")
 	}
 };
 

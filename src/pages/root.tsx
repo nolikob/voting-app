@@ -19,7 +19,7 @@ export const Root = () => {
 				<Button type="primary" onClick={() => navigate("/login")} spaceAfter="medium">
 					Join room
 				</Button>
-				<Text align="center">
+				<Text align="center" spaceAfter="medium">
 					or do you want to create room of your own?<br />Just click the create room button
 				</Text>
 				<Button type="primarySubtle" onClick={() => navigate("/admin")}>

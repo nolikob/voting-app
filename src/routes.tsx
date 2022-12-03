@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
 		element: <JoinRoom />
 	},
 	{
-		path: "/detail/:id",
+		path: "/room/:id",
 		loader: loggedInGuard,
 		element: <RoomDetail />
 	},

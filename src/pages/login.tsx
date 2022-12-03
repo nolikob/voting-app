@@ -1,7 +1,8 @@
 import { Heading } from '@kiwicom/orbit-components';
 import { Layout } from '../layout/index';
-import { logout, signInWithGoogle } from '../firebase';
+import { signInWithGoogle } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+
 export const Login = () => {
 	const navigate = useNavigate();
 
