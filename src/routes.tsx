@@ -6,24 +6,22 @@ export const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Root />,
-		children: [
-			{
-				path: "/login",
-				element: <Login />
-			},
-			{
-				path: "/join",
-				element: <JoinRoom />
-			},
-			{
-				path: "/detail/:id",
-				element: <RoomDetail />
-			},
-			{
-				path: "/admin",
-				element: <AdminPage />
-			}
-		]
+	},
+	{
+		path: "/login",
+		element: <Login />
+	},
+	{
+		path: "/join",
+		element: <JoinRoom />
+	},
+	{
+		path: "/detail/:id",
+		element: <RoomDetail />
+	},
+	{
+		path: "/admin",
+		element: <AdminPage />
 	},
 	{
 		path: "*",
