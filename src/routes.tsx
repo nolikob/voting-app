@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import { Root, Login, JoinRoom, RoomDetail } from "./pages/index";
 
 export const router = createBrowserRouter([
@@ -17,5 +17,11 @@ export const router = createBrowserRouter([
 	{
 		path: "/detail/:id",
 		element: <RoomDetail />
+	},
+	{
+		path: "*",
+		loader: async () => {
+			throw redirect("/")
+		}
 	}
 ]);
