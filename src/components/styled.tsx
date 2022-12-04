@@ -6,7 +6,6 @@ export const PageGrid = styled(Grid)`
 	padding-top: 65px;
 	margin: 0 auto;
 	width: 100%;
-	min-height: 110vh;
 	background: ${({ theme }) => theme.orbit.paletteWhite};
 `;
 

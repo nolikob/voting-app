@@ -1,4 +1,4 @@
-import { Heading } from '@kiwicom/orbit-components';
+import { Heading, InputField } from '@kiwicom/orbit-components';
 import { Layout } from '../layout/index';
 import { useNavigate } from 'react-router-dom';
 import { joinRoom } from './firebaseActions';
@@ -13,7 +13,11 @@ export const JoinRoom = () => {
 				e.preventDefault();
 				await joinRoom(roomId, navigate);
 			}}>
-				<input type="text" value={roomId} onChange={({ target: { value } }) => setRoomId(value)} />
+				<InputField
+					type="text"
+					value={roomId} onChange={({ currentTarget: { value } }) => setRoomId(value)}
+					spaceAfter="largest"
+				/>
 				<button type="submit">Join room</button>
 			</form>
 		</Layout>

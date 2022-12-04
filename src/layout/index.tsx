@@ -1,4 +1,4 @@
-import { Button } from "@kiwicom/orbit-components";
+import { Button, ToastRoot } from "@kiwicom/orbit-components";
 import { FC, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { HeaderWrapper, MainWrapper, PageGrid, Navbar } from "../components/styled";
@@ -39,6 +39,7 @@ export const Layout: FC<Props> = ({ header, children, showLogin = false }) => {
 				</HeaderWrapper>
 				{children}
 			</MainWrapper>
+			<ToastRoot placement="top-right" topOffset={70} />
 		</PageGrid>
 	)
 }

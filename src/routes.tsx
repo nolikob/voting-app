@@ -1,5 +1,6 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { AdminPage } from "./pages/admin";
+import { CreateRoomPage } from "./pages/admin/createRoom";
 import { Root, Login, JoinRoom, RoomDetail } from "./pages/index";
 import { loader as roomDetailLoader } from "./pages/room-detail";
 import { alreadyLoggedInGuard, loggedInGuard } from "./pages/routeGuards";
@@ -30,7 +31,13 @@ export const router = createBrowserRouter([
 	{
 		path: "/admin",
 		loader: loggedInGuard,
-		element: <AdminPage />
+		element: <AdminPage />,
+		children: [
+			{
+				path: "/admin/create",
+				element: <CreateRoomPage />
+			}
+		]
 	},
 	{
 		path: "*",

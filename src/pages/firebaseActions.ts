@@ -30,10 +30,28 @@ export const getRoomData = async (roomId: string)
 	}
 }
 
-export const createRoom = async (data: RoomDetailType) => {
-	return await addDoc(collection(firestore, "rooms"), {
-		...data
-	});
+interface CreateRoomProps {
+	readonly amountOfVotesPerUser: number,
+	readonly votingOptions: string;
+	readonly roomName: string;
+}
+
+export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions }: CreateRoomProps) => {
+	const user = getUser()
+
+	if (user) {
+		const newRoom: RoomDetailType = {
+			amountOfVotesPerUser,
+			roomName,
+			votingOptions: votingOptions.split(",").map(option => option.trim()),
+			authorId: user.uid,
+			voters: []
+		}
+
+		return await addDoc(collection(firestore, "rooms"), {
+			...newRoom
+		});
+	}
 };
 
 export const updateRoom = async (roomId: string, data: RoomDetailType) => {
