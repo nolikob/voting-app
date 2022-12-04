@@ -23,6 +23,7 @@ export const loader = async ({ params }: { params: Params<string> }) => {
 }
 
 export const RoomDetail = () => {
+	// TODO: get rid of this once figured out how to infer type from loader
 	const data = useLoaderData() as { roomData: RoomDetailType };
 
 	return (
