@@ -1,6 +1,7 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { AdminPage } from "./pages/admin";
 import { Root, Login, JoinRoom, RoomDetail } from "./pages/index";
+import { loader as roomDetailLoader } from "./pages/room-detail";
 import { alreadyLoggedInGuard, loggedInGuard } from "./pages/routeGuards";
 
 export const router = createBrowserRouter([
@@ -20,7 +21,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/room/:id",
-		loader: loggedInGuard,
+		loader: async ({ params }) => {
+			await loggedInGuard();
+			return await roomDetailLoader({ params })
+		},
 		element: <RoomDetail />
 	},
 	{
