@@ -4,6 +4,7 @@ import { CreateRoomPage } from "./pages/admin/createRoom";
 import { Root, Login, JoinRoom, RoomDetail } from "./pages/index";
 import { loader as roomDetailLoader } from "./pages/room-detail";
 import { alreadyLoggedInGuard, loggedInGuard } from "./pages/routeGuards";
+import { getUserCreatedRooms } from './pages/firebaseActions';
 
 export const router = createBrowserRouter([
 	{
@@ -30,7 +31,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/admin",
-		loader: loggedInGuard,
+		loader: async () => {
+			await loggedInGuard();
+			return await getUserCreatedRooms();
+		},
 		element: <AdminPage />,
 		children: [
 			{

@@ -67,7 +67,7 @@ export const getUserCreatedRooms = async () => {
 			const q = query(collection(firestore, "rooms"), where("authorId", "==", user.uid));
 			const rooms = await getDocs(q);
 			if (!rooms.empty) {
-				return rooms.docs;
+				return rooms.docs.map(room => room.data());
 			}
 			return [];
 		}
@@ -77,10 +77,14 @@ export const getUserCreatedRooms = async () => {
 	}
 }
 
-const getUser = (): User | null => {
+export const getUser = (): User | null => {
 	const storedUser = window.localStorage.getItem("user");
 	if (storedUser) {
 		return JSON.parse(storedUser);
 	}
 	return null;
+}
+
+export const submitResult = async (result: string, userId: string) => {
+
 }

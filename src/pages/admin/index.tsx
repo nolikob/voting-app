@@ -1,12 +1,20 @@
-import { Heading } from '@kiwicom/orbit-components';
-import { Outlet } from 'react-router-dom';
+import { Heading, Stack } from '@kiwicom/orbit-components';
+import { Outlet, useMatch } from 'react-router-dom';
+import { Dashboard } from '../../components/Dashboard';
 import { Layout } from '../../layout/index';
 export const AdminPage = () => {
+	const isDashboard = useMatch("/admin")
+
 	return (
 		<Layout
-			header={<Heading type="title1">Dashboard</Heading>}
+			header={
+				<Stack>
+					<Heading type="title1">Dashboard</Heading>
+				</Stack>
+			}
 		>
-			<Outlet />
+			{isDashboard && <Dashboard />}
+			{!isDashboard && <Outlet />}
 		</Layout>
 	)
 }
