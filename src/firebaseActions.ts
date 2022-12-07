@@ -1,7 +1,20 @@
-import { firestore } from "../firebase"
-import { doc, getDoc, setDoc, collection, addDoc, query, where, getDocs } from '@firebase/firestore';
-import { RoomDetailType } from '../@types/RoomDetailTypes';
+import { firestore } from "./firebase"
+import {
+	doc,
+	getDoc,
+	setDoc,
+	updateDoc,
+	collection,
+	addDoc,
+	query,
+	where,
+	getDocs,
+	arrayUnion,
+} from '@firebase/firestore';
+import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
+import { RoomDetailType } from './@types/RoomDetailTypes';
 import { User } from "firebase/auth";
+import { createToast } from '@kiwicom/orbit-components';
 
 export const joinRoom = async (roomId: string, callback: (location: string) => void) => {
 	try {
@@ -17,18 +30,7 @@ export const joinRoom = async (roomId: string, callback: (location: string) => v
 	}
 }
 
-export const getRoomData = async (roomId: string)
-	: Promise<RoomDetailType | undefined> => {
-	try {
-		const room = await getDoc(doc(firestore, "rooms", roomId));
-		if (room.exists()) {
-			return room.data() as RoomDetailType;
-		}
-		throw new Error("Room does not seem to exist anymore")
-	} catch (error) {
-		alert("Error while retrieving the room data")
-	}
-}
+export const useGetRoomData = (roomId: string) => useDocumentData(doc(firestore, "rooms", roomId))
 
 interface CreateRoomProps {
 	readonly amountOfVotesPerUser: number,
@@ -43,7 +45,7 @@ export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions
 		const newRoom: RoomDetailType = {
 			amountOfVotesPerUser,
 			roomName,
-			votingOptions: votingOptions.split(",").map(option => option.trim()),
+			votingOptions: votingOptions.split(",").map(option => ({ optionName: option.trim(), amountOfVotes: 0 })),
 			authorId: user.uid,
 			voters: []
 		}
@@ -77,6 +79,12 @@ export const getUserCreatedRooms = async () => {
 	}
 }
 
+export const useGetUserCreatedRooms = () => {
+	const user = getUser();
+	const q = query(collection(firestore, "rooms"), where("authorId", "==", user?.uid));
+	return useCollectionData(q);
+}
+
 export const getUser = (): User | null => {
 	const storedUser = window.localStorage.getItem("user");
 	if (storedUser) {
@@ -85,6 +93,20 @@ export const getUser = (): User | null => {
 	return null;
 }
 
-export const submitResult = async (result: string, userId: string) => {
+interface SubmitResultProps {
+	readonly result: string;
+	readonly userId: string;
+	readonly roomId: string;
+}
 
+export const submitResult = async ({ result, roomId, userId }: SubmitResultProps) => {
+	const roomRef = doc(collection(firestore, "rooms"), roomId);
+	try {
+		await updateDoc(roomRef, {
+			voters: arrayUnion(userId)
+		});
+		createToast("Vote submitted");
+	} catch (error) {
+		console.error(error);
+	}
 }

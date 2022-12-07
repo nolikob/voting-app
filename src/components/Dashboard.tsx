@@ -1,8 +1,15 @@
-import { Stack, Tag, Tile, TileGroup } from '@kiwicom/orbit-components';
-import { Link, useLoaderData } from 'react-router-dom';
-import { RoomDetailType } from '../@types/RoomDetailTypes';
+import { Badge, Loading, Stack, Tile, TileGroup, Text } from '@kiwicom/orbit-components';
+import { Link } from 'react-router-dom';
+import { useGetUserCreatedRooms } from '../firebaseActions';
+import { Results } from './Results';
 export const Dashboard = () => {
-	const data = useLoaderData() as RoomDetailType[] | undefined;
+	const [data, loading] = useGetUserCreatedRooms();
+
+	if (loading) {
+		return <Loading />
+	}
+
+	console.log(data);
 
 	return (
 		<Stack flex direction="column">
@@ -12,12 +19,31 @@ export const Dashboard = () => {
 				</Link>
 			</Stack>
 			<TileGroup>
-				{data?.map((item, i) => <Tile key={`${item.roomName}-${i}`} expandable title={
-					item.roomName
-				}>
-					<Tag>
-						Amount of votes: {item.voters.length}
-					</Tag>
+				{data?.map((item, i) => <Tile
+					key={`${item.roomName}-${i}`}
+					expandable
+					title={
+						<Stack direction="row" justify="between" align="center">
+							<Text>
+								{item.roomName}
+							</Text>
+							<Badge type="info">
+								id mistnosti
+							</Badge>
+						</Stack>
+					}
+				>
+					<Stack direction="column">
+						<Stack justify="end" direction="row" align="center" spacing="small">
+							<Text>
+								Amount of votes:
+							</Text>
+							<Badge type="success">
+								{item.voters.length}
+							</Badge>
+						</Stack>
+						<Results results={item.votingOptions} />
+					</Stack>
 				</Tile>)}
 			</TileGroup>
 		</Stack>

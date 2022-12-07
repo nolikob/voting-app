@@ -2,7 +2,7 @@ import { Button, Stack, Text, InputField, createToast } from "@kiwicom/orbit-com
 import { ChevronLeft } from "@kiwicom/orbit-components/icons"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Link } from "react-router-dom";
-import { createRoom } from "../firebaseActions";
+import { createRoom } from "../../firebaseActions";
 
 interface FormInputs {
 	readonly roomName: string;

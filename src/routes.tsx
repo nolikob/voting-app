@@ -1,10 +1,8 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { AdminPage } from "./pages/admin";
 import { CreateRoomPage } from "./pages/admin/createRoom";
-import { Root, Login, JoinRoom, RoomDetail } from "./pages/index";
-import { loader as roomDetailLoader } from "./pages/room-detail";
+import { Root, Login, JoinRoom, RoomDetailPage } from "./pages/index";
 import { alreadyLoggedInGuard, loggedInGuard } from "./pages/routeGuards";
-import { getUserCreatedRooms } from './pages/firebaseActions';
 
 export const router = createBrowserRouter([
 	{
@@ -23,17 +21,15 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/room/:id",
-		loader: async ({ params }) => {
-			await loggedInGuard();
-			return await roomDetailLoader({ params })
+		loader: async () => {
+			return await loggedInGuard();
 		},
-		element: <RoomDetail />
+		element: <RoomDetailPage />
 	},
 	{
 		path: "/admin",
 		loader: async () => {
-			await loggedInGuard();
-			return await getUserCreatedRooms();
+			return await loggedInGuard();
 		},
 		element: <AdminPage />,
 		children: [

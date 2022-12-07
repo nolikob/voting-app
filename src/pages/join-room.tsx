@@ -1,7 +1,7 @@
 import { Heading, InputField } from '@kiwicom/orbit-components';
 import { Layout } from '../layout/index';
 import { useNavigate } from 'react-router-dom';
-import { joinRoom } from './firebaseActions';
+import { joinRoom } from '../firebaseActions';
 import { useState } from 'react';
 export const JoinRoom = () => {
 	const navigate = useNavigate();
