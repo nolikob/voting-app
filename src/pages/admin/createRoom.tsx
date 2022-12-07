@@ -70,7 +70,7 @@ export const CreateRoomPage = () => {
 							{errors.votingOptions.message}
 						</Text>
 					)}
-					<Controller
+					{/* <Controller
 						name="amountOfVotesPerUser"
 						control={control}
 						rules={{
@@ -88,7 +88,7 @@ export const CreateRoomPage = () => {
 						<Text spaceAfter="small" type="critical">
 							Amount of votes must be greater than one.
 						</Text>
-					)}
+					)} */}
 					<Button type="primary" submit>
 						Create room
 					</Button>
