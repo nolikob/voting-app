@@ -10,6 +10,7 @@ import {
 	where,
 	getDocs,
 	arrayUnion,
+	arrayRemove
 } from '@firebase/firestore';
 import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
 import { RoomDetailType } from './@types/RoomDetailTypes';
@@ -102,9 +103,23 @@ interface SubmitResultProps {
 export const submitResult = async ({ result, roomId, userId }: SubmitResultProps) => {
 	const roomRef = doc(collection(firestore, "rooms"), roomId);
 	try {
-		await updateDoc(roomRef, {
-			voters: arrayUnion(userId)
-		});
+		const roomData = (await getDoc(roomRef)).data();
+		if (roomData) {
+			const { votingOptions } = roomData as RoomDetailType;
+			const updatedVotingOptions = [...votingOptions];
+			const indexOfResult = updatedVotingOptions.findIndex(option => option.optionName === result)
+			updatedVotingOptions.splice(indexOfResult, 1, {
+				optionName: result,
+				amountOfVotes: updatedVotingOptions[indexOfResult].amountOfVotes + 1
+			});
+			await updateDoc(roomRef, {
+				votingOptions: arrayRemove(...votingOptions)
+			})
+			await updateDoc(roomRef, {
+				voters: arrayUnion(userId),
+				votingOptions: arrayUnion(...updatedVotingOptions),
+			});
+		}
 		createToast("Vote submitted");
 	} catch (error) {
 		console.error(error);
