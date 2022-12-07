@@ -4,6 +4,7 @@ export interface RoomDetailType {
 	readonly votingOptions: VotingOption[];
 	readonly voters: string[];
 	readonly roomName: string;
+	readonly roomId: string;
 }
 
 export interface VotingOption {

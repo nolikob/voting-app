@@ -43,7 +43,7 @@ export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions
 	const user = getUser()
 
 	if (user) {
-		const newRoom: RoomDetailType = {
+		const newRoom: Omit<RoomDetailType, "roomId"> = {
 			amountOfVotesPerUser,
 			roomName,
 			votingOptions: votingOptions.split(",").map(option => ({ optionName: option.trim(), amountOfVotes: 0 })),
@@ -51,9 +51,15 @@ export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions
 			voters: []
 		}
 
-		return await addDoc(collection(firestore, "rooms"), {
+		const newCreatedRoom = await addDoc(collection(firestore, "rooms"), {
 			...newRoom
 		});
+
+		await updateDoc(newCreatedRoom, {
+			roomId: newCreatedRoom.id
+		});
+
+		return newCreatedRoom;
 	}
 };
 
@@ -61,23 +67,6 @@ export const updateRoom = async (roomId: string, data: RoomDetailType) => {
 	return await setDoc(doc(firestore, "rooms", roomId), {
 		...data
 	})
-}
-
-export const getUserCreatedRooms = async () => {
-	const user = getUser();
-	try {
-		if (user) {
-			const q = query(collection(firestore, "rooms"), where("authorId", "==", user.uid));
-			const rooms = await getDocs(q);
-			if (!rooms.empty) {
-				return rooms.docs.map(room => room.data());
-			}
-			return [];
-		}
-	} catch (error) {
-		alert("Error occured while loading user created rooms");
-		console.error(error);
-	}
 }
 
 export const useGetUserCreatedRooms = () => {

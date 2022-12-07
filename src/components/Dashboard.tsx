@@ -28,7 +28,7 @@ export const Dashboard = () => {
 								{item.roomName}
 							</Text>
 							<Badge type="info">
-								id mistnosti
+								{item.roomId}
 							</Badge>
 						</Stack>
 					}

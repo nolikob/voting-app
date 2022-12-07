@@ -3,7 +3,7 @@ import type { RoomDetailType } from "../@types/RoomDetailTypes";
 import { getUser, submitResult } from "firebaseActions";
 import { FC, useState } from "react";
 
-type Props = { id: string } & Omit<RoomDetailType, "authorId">;
+type Props = { id: string } & Omit<RoomDetailType, "authorId" | "roomId">;
 
 export const RoomDetail: FC<Props> = ({ roomName, amountOfVotesPerUser, votingOptions, voters, id }) => {
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
