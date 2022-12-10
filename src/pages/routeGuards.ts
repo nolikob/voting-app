@@ -1,5 +1,5 @@
-import { redirect } from "react-router-dom";
-import { isUserLoggedIn } from "../firebase";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
+import { isUserLoggedIn } from '../firebase';
 
 export const alreadyLoggedInGuard = async () => {
 	if (isUserLoggedIn()) {
@@ -8,9 +8,16 @@ export const alreadyLoggedInGuard = async () => {
 	return null;
 };
 
-export const loggedInGuard = async () => {
+export const loggedInGuard = async (props: LoaderFunctionArgs) => {
+	// const redirectURI = props.request.url;
+
+	// if (!isUserLoggedIn() && redirectURI.indexOf("login") === -1) {
+	// 	throw redirect(`/login?redirectURI=${redirectURI}`);
+	// }
+
 	if (!isUserLoggedIn()) {
-		throw redirect("/login");
+		throw redirect("/login")
 	}
+
 	return null;
 };

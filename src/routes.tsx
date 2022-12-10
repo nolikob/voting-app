@@ -22,15 +22,15 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/room/:id",
-		loader: async () => {
-			return await loggedInGuard();
+		loader: async (props) => {
+			return await loggedInGuard(props);
 		},
 		element: <RoomDetailPage />
 	},
 	{
 		path: "/admin",
-		loader: async () => {
-			return await loggedInGuard();
+		loader: async (props) => {
+			return await loggedInGuard(props);
 		},
 		element: <AdminPage />,
 		children: [

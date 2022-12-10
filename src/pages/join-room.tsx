@@ -1,4 +1,4 @@
-import { Heading, InputField } from '@kiwicom/orbit-components';
+import { Heading, InputField, Button, Stack } from '@kiwicom/orbit-components';
 import { Layout } from '../layout/index';
 import { useNavigate } from 'react-router-dom';
 import { joinRoom } from '../firebaseActions';
@@ -13,12 +13,16 @@ export const JoinRoom = () => {
 				e.preventDefault();
 				await joinRoom(roomId, navigate);
 			}}>
-				<InputField
-					type="text"
-					value={roomId} onChange={({ currentTarget: { value } }) => setRoomId(value)}
-					spaceAfter="largest"
-				/>
-				<button type="submit">Join room</button>
+				<Stack spacing="medium" direction="row" align="stretch">
+					<InputField
+						type="text"
+						value={roomId} onChange={({ currentTarget: { value } }) => setRoomId(value)}
+						spaceAfter="medium"
+						placeholder="Pass in the code you received to join the voting poll."
+
+					/>
+					<Button type="primarySubtle" size="normal">Join</Button>
+				</Stack>
 			</form>
 		</Layout>
 	)

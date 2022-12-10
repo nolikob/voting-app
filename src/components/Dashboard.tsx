@@ -1,8 +1,8 @@
 import { Badge, Loading, Stack, Tile, TileGroup, Text, Button } from '@kiwicom/orbit-components';
 import { Edit, Remove } from '@kiwicom/orbit-components/lib/icons';
-import { Link, useNavigate } from 'react-router-dom';
 import { useGetUserCreatedRooms, removeRoom } from '../firebaseActions';
 import { Results } from './Results';
+import { useNavigate } from 'react-router-dom';
 export const Dashboard = () => {
 	const [data, loading] = useGetUserCreatedRooms();
 	const navigate = useNavigate();
@@ -13,11 +13,6 @@ export const Dashboard = () => {
 
 	return (
 		<Stack flex direction="column">
-			<Stack direction="row">
-				<Link to="/admin/create">
-					Create new room
-				</Link>
-			</Stack>
 			<TileGroup>
 				{data?.map((item) => <Tile
 					key={`${item.roomId}`}
