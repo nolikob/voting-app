@@ -1,39 +1,43 @@
-import { Button, Stack, Text, InputField, createToast } from "@kiwicom/orbit-components";
+import { Button, createToast, InputField, Stack, Text } from "@kiwicom/orbit-components";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { createRoom } from "../../firebaseActions";
+import { RoomDetailType } from "types/RoomDetailTypes";
+import { updateRoom } from '../firebaseActions';
 
 interface FormInputs {
 	readonly roomName: string;
 	readonly votingOptions: string;
-	readonly amountOfVotesPerUser: number;
 }
 
-export const CreateRoomPage = () => {
-	const { control, handleSubmit, formState, reset } = useForm<FormInputs>({
+export const EditRoomForm = ({ roomDetail }: { roomDetail: RoomDetailType }) => {
+	const votingOptions = roomDetail.votingOptions.map(({ optionName }) => optionName).join(", ");
+
+	const { control, handleSubmit, formState } = useForm<FormInputs>({
 		reValidateMode: "onChange",
 		shouldFocusError: true,
 		defaultValues: {
-			roomName: "",
-			votingOptions: "",
-			amountOfVotesPerUser: 1
+			roomName: roomDetail.roomName,
+			votingOptions,
 		},
 		criteriaMode: "all"
 	});
 
-	const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+	const onSubmit: SubmitHandler<FormInputs> = async ({ roomName, votingOptions }) => {
 		try {
-			const response = await createRoom(data);
+			await updateRoom({
+				roomName,
+				votingOptions,
+				amountOfVotesPerUser: 1,
+				authorId: roomDetail.authorId,
+				roomId: roomDetail.roomId
+			});
 
-			if (response) {
-				createToast(`Room ${data.roomName} was created`)
-				reset();
-			}
+			createToast(`Room ${roomName} was updated`)
+
 		} catch (error) {
 
 		}
 	};
 	const { errors } = formState;
-
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -69,5 +73,5 @@ export const CreateRoomPage = () => {
 				</Button>
 			</Stack>
 		</form>
-	)
+	);
 }

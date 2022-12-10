@@ -4,6 +4,7 @@ import {
 	getDoc,
 	setDoc,
 	updateDoc,
+	deleteDoc,
 	collection,
 	addDoc,
 	query,
@@ -12,7 +13,7 @@ import {
 	arrayRemove
 } from '@firebase/firestore';
 import { useDocumentData, useCollectionData } from "react-firebase-hooks/firestore";
-import { RoomDetailType } from './@types/RoomDetailTypes';
+import { RoomDetailType } from './types/RoomDetailTypes';
 import { User } from "firebase/auth";
 import { createToast } from '@kiwicom/orbit-components';
 
@@ -39,13 +40,13 @@ interface CreateRoomProps {
 }
 
 export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions }: CreateRoomProps) => {
-	const user = getUser()
+	const user = getUser();
 
 	if (user) {
 		const newRoom: Omit<RoomDetailType, "roomId"> = {
 			amountOfVotesPerUser,
 			roomName,
-			votingOptions: votingOptions.split(",").map(option => ({ optionName: option.trim(), amountOfVotes: 0 })),
+			votingOptions: createVotingOptions(votingOptions),
 			authorId: user.uid,
 			voters: []
 		}
@@ -62,11 +63,31 @@ export const createRoom = async ({ amountOfVotesPerUser, roomName, votingOptions
 	}
 };
 
-export const updateRoom = async (roomId: string, data: RoomDetailType) => {
-	return await setDoc(doc(firestore, "rooms", roomId), {
-		...data
-	})
+
+
+interface UpdateRoomProps extends CreateRoomProps {
+	readonly roomId: string;
+	readonly authorId: string;
 }
+
+export const updateRoom = async ({ amountOfVotesPerUser, roomName, roomId, votingOptions, authorId }: UpdateRoomProps) => {
+	return await setDoc(doc(firestore, "rooms", roomId), {
+		amountOfVotesPerUser,
+		roomName,
+		authorId,
+		voters: [],
+		votingOptions: createVotingOptions(votingOptions),
+		roomId,
+	})
+};
+
+export const removeRoom = async (roomId: string) => {
+	// eslint-disable-next-line no-restricted-globals
+	if (confirm("Delete room?") === true) {
+		await deleteDoc(doc(firestore, "rooms", roomId))
+		createToast("Room deleted");
+	}
+};
 
 export const useGetUserCreatedRooms = () => {
 	const user = getUser();
@@ -113,3 +134,6 @@ export const submitResult = async ({ result, roomId, userId }: SubmitResultProps
 		console.error(error);
 	}
 }
+
+const createVotingOptions = (votingOptions: string) =>
+	votingOptions.split(",").map(option => ({ optionName: option.trim(), amountOfVotes: 0 }))

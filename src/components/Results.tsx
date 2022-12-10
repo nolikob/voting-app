@@ -1,4 +1,4 @@
-import { VotingOption } from "../@types/RoomDetailTypes";
+import { VotingOption } from "../types/RoomDetailTypes";
 import { FC } from "react";
 import { BadgePrimitive, Stack, Text } from "@kiwicom/orbit-components";
 

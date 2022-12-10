@@ -1,5 +1,5 @@
 import { Heading, Text, Stack, ChoiceGroup, Tag, Radio, Button, Alert } from "@kiwicom/orbit-components";
-import type { RoomDetailType } from "../@types/RoomDetailTypes";
+import type { RoomDetailType } from "../types/RoomDetailTypes";
 import { getUser, submitResult } from "firebaseActions";
 import { FC, useState } from "react";
 

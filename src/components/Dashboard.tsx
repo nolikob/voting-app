@@ -1,15 +1,15 @@
-import { Badge, Loading, Stack, Tile, TileGroup, Text } from '@kiwicom/orbit-components';
-import { Link } from 'react-router-dom';
-import { useGetUserCreatedRooms } from '../firebaseActions';
+import { Badge, Loading, Stack, Tile, TileGroup, Text, Button } from '@kiwicom/orbit-components';
+import { Edit, Remove } from '@kiwicom/orbit-components/lib/icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { useGetUserCreatedRooms, removeRoom } from '../firebaseActions';
 import { Results } from './Results';
 export const Dashboard = () => {
 	const [data, loading] = useGetUserCreatedRooms();
+	const navigate = useNavigate();
 
 	if (loading) {
 		return <Loading />
 	}
-
-	console.log(data);
 
 	return (
 		<Stack flex direction="column">
@@ -19,8 +19,8 @@ export const Dashboard = () => {
 				</Link>
 			</Stack>
 			<TileGroup>
-				{data?.map((item, i) => <Tile
-					key={`${item.roomName}-${i}`}
+				{data?.map((item) => <Tile
+					key={`${item.roomId}`}
 					expandable
 					title={
 						<Stack direction="row" justify="between" align="center">
@@ -34,6 +34,14 @@ export const Dashboard = () => {
 					}
 				>
 					<Stack direction="column">
+						<Stack justify="end">
+							<Button size="small" type="secondary" onClick={() => navigate(`/admin/edit/${item.roomId}`)}>
+								<Edit />
+							</Button>
+							<Button size="small" type="critical" onClick={async () => removeRoom(item.roomId)}>
+								<Remove />
+							</Button>
+						</Stack>
 						<Stack justify="end" direction="row" align="center" spacing="small">
 							<Text>
 								Amount of votes:

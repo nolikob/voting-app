@@ -1,3 +1,4 @@
+import { EditRoomPage } from "pages/admin/editRoom";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { AdminPage } from "./pages/admin";
 import { CreateRoomPage } from "./pages/admin/createRoom";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/admin/create",
 				element: <CreateRoomPage />
+			},
+			{
+				path: "/admin/edit/:id",
+				element: <EditRoomPage />
 			}
 		]
 	},

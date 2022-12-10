@@ -2,13 +2,13 @@ import { Loading } from '@kiwicom/orbit-components';
 import { useParams } from 'react-router-dom';
 import { Layout } from '../layout/index';
 import { useGetRoomData } from '../firebaseActions';
-import { RoomDetailType } from '../@types/RoomDetailTypes';
+import { RoomDetailType } from '../types/RoomDetailTypes';
 import { RoomDetail } from 'components/RoomDetail';
 
 export const RoomDetailPage = () => {
 	const params = useParams();
 	const id = params?.id ?? "";
-	const [data, loading] = useGetRoomData(id)
+	const [data, loading] = useGetRoomData(id);
 
 	if (loading) {
 		return <Loading />

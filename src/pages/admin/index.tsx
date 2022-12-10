@@ -1,5 +1,6 @@
 import { Heading, Stack } from '@kiwicom/orbit-components';
-import { Outlet, useMatch } from 'react-router-dom';
+import { ChevronLeft } from '@kiwicom/orbit-components/lib/icons';
+import { Link, Outlet, useMatch } from 'react-router-dom';
 import { Dashboard } from '../../components/Dashboard';
 import { Layout } from '../../layout/index';
 export const AdminPage = () => {
@@ -14,7 +15,12 @@ export const AdminPage = () => {
 			}
 		>
 			{isDashboard && <Dashboard />}
-			{!isDashboard && <Outlet />}
+			{!isDashboard && <>
+				<Link to="/admin">
+					<ChevronLeft /> Back to dashboard
+				</Link>
+				<Outlet />
+			</>}
 		</Layout>
 	)
 }
